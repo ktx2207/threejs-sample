@@ -58,6 +58,10 @@
             scene.add(axis);
             // 軸オブジェクトの位置座標を設定
             axis.position.set(0, 0, 0);
+            // グリッドオブジェクトの生成
+            var grid = new THREE.GridHelper(50, 10);
+            scene.add(grid);
+            grid.rotation.set(Math.PI/2, 0, 0);
 
         }
 
