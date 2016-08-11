@@ -66,17 +66,19 @@
             grid.rotation.set(Math.PI/2, 0, 0);
             objectGroup.add(grid);
 
-            // 形状オブジェクトを生成
-            var geometry = new THREE.BoxGeometry(50, 50, 10);
-            // 材質オブジェクトを生成
-            var material = new THREE.MeshNormalMaterial({opacity: 0.3, transparent:true});
+
             // 直方体を生成
-            var cube = new THREE.Mesh(geometry, material);
+            var height = 10;
+            var cube1 =  createCube(50, 50, height, false);
+            var cube2 =  createCube(50, 50, 50 - height, true);
+            cube2.position.setZ(height);
             // 直方体をグループに追加
-            objectGroup.add(cube);
+            objectGroup.add(cube1);
+            objectGroup.add(cube2);
+
 
             // 平面オブジェクトを追加
-            geometry = new THREE.PlaneGeometry(100, 100, 10, 10);
+            geometry = new THREE.PlaneGeometry(50, 50, 10, 10);
             material = new THREE.MeshNormalMaterial({opacity: 0.8, transparent:true});
             var plane = new THREE.Mesh(geometry, material);
             plane.position.setZ(10);
@@ -84,6 +86,15 @@
 
             // オブジェクトグループをシーンに追加
             scene.add(objectGroup);
+        }
+
+        function createCube(x, y, z, transparent) {
+            // 形状オブジェクトを生成
+            var geometry = new THREE.BoxGeometry(x, y, z);
+            // 材質オブジェクトを生成
+            var material = new THREE.MeshNormalMaterial({opacity: 0.3, transparent:transparent});
+            // 直方体を生成
+            return new THREE.Mesh(geometry, material);
         }
 
         function draw() {
