@@ -72,7 +72,9 @@
             // 平面オブジェクトを追加
             geometry = new THREE.PlaneGeometry(100, 100, 10, 10);
             material = new THREE.MeshNormalMaterial({opacity: 0.8, transparent:true});
-            scene.add(new THREE.Mesh(geometry, material));
+            var plane = new THREE.Mesh(geometry, material);
+            plane.position.setZ(10);
+            scene.add(plane);
 
 
 
