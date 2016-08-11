@@ -76,14 +76,6 @@
             objectGroup.add(cube1);
             objectGroup.add(cube2);
 
-
-            // 平面オブジェクトを追加
-            geometry = new THREE.PlaneGeometry(50, 50, 10, 10);
-            material = new THREE.MeshNormalMaterial({opacity: 0.8, transparent:true});
-            var plane = new THREE.Mesh(geometry, material);
-            plane.position.setZ(10);
-            objectGroup.add(plane);
-
             // オブジェクトグループをシーンに追加
             scene.add(objectGroup);
         }
@@ -92,7 +84,7 @@
             // 形状オブジェクトを生成
             var geometry = new THREE.BoxGeometry(x, y, z);
             // 材質オブジェクトを生成
-            var material = new THREE.MeshNormalMaterial({opacity: 0.3, transparent:transparent});
+            var material = new THREE.MeshNormalMaterial({opacity: 0.1, transparent:transparent});
             // 直方体を生成
             return new THREE.Mesh(geometry, material);
         }
