@@ -71,7 +71,7 @@
             var height = 10;
             var cube1 =  createCube(50, 50, height, false);
             var cube2 =  createCube(50, 50, 50 - height, true);
-            cube2.position.setZ(height);
+            cube2.position.setY(height);
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
@@ -84,7 +84,7 @@
             // 形状オブジェクトを生成
             var geometry = new THREE.BoxGeometry(x, y, z);
             // 材質オブジェクトを生成
-            var material = new THREE.MeshNormalMaterial({opacity: 0.1, transparent:transparent});
+            var material = new THREE.MeshNormalMaterial({opacity: 0.2, transparent:transparent});
             // 直方体を生成
             return new THREE.Mesh(geometry, material);
         }
