@@ -52,32 +52,38 @@
 
         var axis; // 軸オブジェクト
         function initObject() {
+            // グループを生成
+            var objectGroup = new THREE.Group();
+
             // 軸オブジェクトの生成
             axis = new THREE.AxisHelper(50);
-            // シーンに軸オブジェクトを追加
-            scene.add(axis);
+            // グループに軸オブジェクトを追加
+            objectGroup.add(axis);
             // 軸オブジェクトの位置座標を設定
             axis.position.set(0, 0, 0);
             // グリッドオブジェクトの生成
             var grid = new THREE.GridHelper(50, 10);
-            scene.add(grid);
             grid.rotation.set(Math.PI/2, 0, 0);
+            objectGroup.add(grid);
+
             // 形状オブジェクトを生成
             var geometry = new THREE.BoxGeometry(50, 50, 50, 1, 1, 5);
             // 材質オブジェクトを生成
             var material = new THREE.MeshNormalMaterial({opacity: 0.3, transparent:true});
-            // オブジェクトの生成
-            scene.add(new THREE.Mesh(geometry, material));
+            // 直方体を生成
+            var cube = new THREE.Mesh(geometry, material);
+            // 直方体をグループに追加
+            objectGroup.add(cube);
 
             // 平面オブジェクトを追加
             geometry = new THREE.PlaneGeometry(100, 100, 10, 10);
             material = new THREE.MeshNormalMaterial({opacity: 0.8, transparent:true});
             var plane = new THREE.Mesh(geometry, material);
             plane.position.setZ(10);
-            scene.add(plane);
+            objectGroup.add(plane);
 
-
-
+            // オブジェクトグループをシーンに追加
+            scene.add(objectGroup);
         }
 
         function draw() {
