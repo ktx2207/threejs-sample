@@ -69,6 +69,12 @@
             // オブジェクトの生成
             scene.add(new THREE.Mesh(geometry, material));
 
+            // 平面オブジェクトを追加
+            geometry = new THREE.PlaneGeometry(100, 100, 10, 10);
+            material = new THREE.MeshNormalMaterial({opacity: 0.8, transparent:true});
+            scene.add(new THREE.Mesh(geometry, material));
+
+
 
         }
 
