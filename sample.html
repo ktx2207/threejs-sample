@@ -71,7 +71,7 @@
             var height = 10;
             var cube1 =  createCube(50, 50, height, false);
             var cube2 =  createCube(50, 50, 50 - height, true);
-            cube2.position.setY(height);
+            cube2.position.setZ(height+10);
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
