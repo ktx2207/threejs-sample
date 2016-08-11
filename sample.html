@@ -65,7 +65,7 @@
             // 形状オブジェクトを生成
             var geometry = new THREE.BoxGeometry(50, 50, 50, 1, 1, 5);
             // 材質オブジェクトを生成
-            var material = new THREE.MeshNormalMaterial();
+            var material = new THREE.MeshNormalMaterial({opacity: 0.3, transparent:true});
             // オブジェクトの生成
             scene.add(new THREE.Mesh(geometry, material));
 
