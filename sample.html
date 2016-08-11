@@ -62,6 +62,13 @@
             var grid = new THREE.GridHelper(50, 10);
             scene.add(grid);
             grid.rotation.set(Math.PI/2, 0, 0);
+            // 形状オブジェクトを生成
+            var geometry = new THREE.BoxGeometry(50, 50, 50, 1, 1, 5);
+            // 材質オブジェクトを生成
+            var material = new THREE.MeshNormalMaterial();
+            // オブジェクトの生成
+            scene.add(new THREE.Mesh(geometry, material));
+
 
         }
 
