@@ -136,8 +136,9 @@
         }
 
         var axis; // 軸オブジェクト
-        var cubeX = 50;
-        var cubeY = 50;
+        var cubeX = 100;
+        var cubeY = 100;
+        var cubeZ = 300;
         function initObject() {
             // グループを生成
             var objectGroup = new THREE.Group();
@@ -149,7 +150,7 @@
             // 軸オブジェクトの位置座標を設定
             axis.position.set(0, 0, 0);
             // グリッドオブジェクトの生成
-            var grid = new THREE.GridHelper(50, 10);
+            var grid = new THREE.GridHelper(200, 10);
             grid.rotation.set(Math.PI/2, 0, 0);
             objectGroup.add(grid);
 
@@ -169,7 +170,7 @@
             cube1.receiveShadow = true;
             // 影の発生元にもなる。
             cube1.castShadow = true;
-            var cube2 =  createCube(cubeX, cubeY, 50 - height, true);
+            var cube2 =  createCube(cubeX, cubeY, cubeZ - height, true);
             cube2.position.setZ(height+10);
             // 影の発生元になる。
             cube2.castShadow = true;
