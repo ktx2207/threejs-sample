@@ -5,6 +5,8 @@
     <title>three.jsサンプル</title>
     <script src="./lib/three.min.js"></script>
     <script src="./lib/TrackballControls.js"></script>
+    <script src="./lib/DragControls.js"></script>
+    <script src="./lib/Projector.js"></script>
     <style>
         *{padding:0px; margin:0px}
         div#canvas-frame{
@@ -41,6 +43,7 @@
 
         var camera;
         var trackball;
+        var dragcontrols;
         function initCamera() {
             camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
@@ -50,6 +53,7 @@
             camera.up.set(0,0,1);
             // カメラの中心位置ベクトルの設定
             camera.lookAt({x: 0, y: 0, z: 0});
+
             // トラックボールオブジェクト生成
             trackball = new THREE.TrackballControls(camera, canvasFrame);
             // トラックボールによる回転を有効にする。
@@ -68,6 +72,38 @@
             trackball.staticMoving = true;
             // マウス左ボタンドラッグ終了後の回転の減衰定数設定
             trackball.dynamicDampingFactor = 0.3;
+
+            // ドラッグコントロールオブジェクトの生成
+            dragcontrols = new THREE.DragControls(camera, null, renderer.domElement);
+            // ドラッグコントロールを有効化
+            dragcontrols.enabled = true;
+            // ドラッグ対象オブジェクト
+            var dragObject = null;
+
+            // マウスオーバーイベントの登録
+            dragcontrols.on('hoveron', function(e){
+                // トラックボールオブジェクトを無効化
+                trackball.enabled = false;
+                // マウスドラッグ対象オブジェクトが既に存在する場合
+                if(dragObject) dragObject.material.opacity = 1.0; // オブジェクトを不透明にする。
+                // マウスドラッグ対象オブジェクトを更新
+                dragObject = e.object;
+                // マウスオーバーしたオブジェクトを半透明化
+                dragObject.material.opacity = 0.5;
+            });
+
+            // マウスアウトイベントの登録
+            dragcontrols.on('hoveroff', function(e){
+                // トラックボールオブジェクトを有効化
+                trackball.enabled = true;
+                // マウスオーバーしたオブジェクトを不透明にする。
+                if(e) e.object.material.opacity = 1.0;
+                // ドラッグ対象オブジェクトを無しとする。
+                dragObject = null;
+            });
+
+
+
         }
 
         var axis; // 軸オブジェクト
@@ -99,6 +135,9 @@
             // 回転体を追加
             objectGroup.add(createLathe(5));
 
+            // 回転体オブジェクトの配列をドラッグコントロール対象に追加
+            dragcontrols.setObject(lathes);
+
             // オブジェクトグループをシーンに追加
             scene.add(objectGroup);
         }
@@ -112,6 +151,7 @@
             return new THREE.Mesh(geometry, material);
         }
 
+        var lathes=[]; // 回転体オブジェクトの配列
         // 回転体オブジェクトを生成する
         function createLathe(height) {
             var points = [];
@@ -128,6 +168,7 @@
             var lathe = new THREE.Mesh(geometry, material);
             lathe.position.set(0,0,height);
             lathe.rotation.set(Math.PI/2,0,0);
+            lathes.push(lathe);
             return lathe;
         }
 
