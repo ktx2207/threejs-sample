@@ -45,7 +45,6 @@
         var trackball;
         var dragcontrols;
         var floor = 1;
-        var dragObject = null; // ドラッグ対象オブジェクト
         function initCamera() {
             camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
@@ -74,7 +73,7 @@
             trackball.staticMoving = true;
             // マウス左ボタンドラッグ終了後の回転の減衰定数設定
             trackball.dynamicDampingFactor = 0.3;
-
+            var dragObject = null; // ドラッグ対象オブジェクト
             // ドラッグコントロールオブジェクトの生成
             dragcontrols = new THREE.DragControls(camera, null, renderer.domElement);
             // ドラッグコントロールを有効化
