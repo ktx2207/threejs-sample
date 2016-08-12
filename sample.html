@@ -85,11 +85,11 @@
                 // トラックボールオブジェクトを無効化
                 trackball.enabled = false;
                 // マウスドラッグ対象オブジェクトが既に存在する場合
-                if(dragObject) dragObject.material.opacity = 1.0; // オブジェクトを不透明にする。
+                if(dragObject) dragObject.opacity = 1.0; // オブジェクトを不透明にする。
                 // マウスドラッグ対象オブジェクトを更新
                 dragObject = e.object;
                 // マウスオーバーしたオブジェクトを半透明化
-                dragObject.material.opacity = 0.5;
+                dragObject.opacity = 0.5;
             });
 
             // マウスアウトイベントの登録
@@ -98,7 +98,7 @@
                 trackball.enabled = true;
                 // マウスオーバーしたオブジェクトを不透明にする。
                 if(e) {
-                    e.object.material.opacity = 1.0;
+                    e.object.opacity = 1.0;
                 }
                 // ドラッグ対象オブジェクトを無しとする。
                 dragObject = null;
