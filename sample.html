@@ -37,7 +37,7 @@
 
             canvasFrame.appendChild(renderer.domElement);
             // レンダラーオブジェクトのクリアーカラー設定
-            renderer.setClearColor(0xEEEEEE, 0.6);
+            renderer.setClearColor(0xEEEEEE, 1.0);
             // シーンオブジェクトの生成
             scene = new THREE.Scene();
         }
@@ -168,7 +168,7 @@
             // 形状オブジェクトを生成
             var geometry = new THREE.BoxGeometry(x, y, z);
             // 材質オブジェクトを生成
-            var material = new THREE.MeshPhongMaterial({color: 0x008B8B, specular: 0x5F9EA0, shininess: 50, opacity: 0.2, transparent:transparent});
+            var material = new THREE.MeshPhongMaterial({color: 0x008B8B, specular: 0x5F9EA0, shininess: 30, opacity: 0.2, transparent:transparent});
             // 直方体を生成
             return new THREE.Mesh(geometry, material);
         }
