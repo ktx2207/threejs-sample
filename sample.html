@@ -171,9 +171,7 @@
             // 影の発生元にもなる。
             cube1.castShadow = true;
             var cube2 =  createCube(cubeX, cubeY, cubeZ - height, true);
-            cube2.position.setZ(cubeZ/2+height);
-            // 影の発生元になる。
-            cube2.castShadow = true;
+            cube2.position.setZ(cubeZ/2);
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
