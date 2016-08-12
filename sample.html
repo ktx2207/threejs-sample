@@ -109,6 +109,8 @@
         }
 
         var axis; // 軸オブジェクト
+        var cubeX = 50;
+        var cubeY = 50;
         function initObject() {
             // グループを生成
             var objectGroup = new THREE.Group();
@@ -127,16 +129,16 @@
 
             // 直方体を生成
             var height = 10;
-            var cube1 =  createCube(50, 50, height, false);
-            var cube2 =  createCube(50, 50, 50 - height, true);
+            var cube1 =  createCube(cubeX, cubeY, height, false);
+            var cube2 =  createCube(cubeX, cubeY, 50 - height, true);
             cube2.position.setZ(height+10);
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
 
             // 回転体を追加
-            objectGroup.add(createLathe(0,0,5));
-            objectGroup.add(createLathe(20,0,5));
+            objectGroup.add(createLathe(0,0,floor*5));
+            objectGroup.add(createLathe(20,0,floor*5));
 
 
             // 回転体オブジェクトの配列をドラッグコントロール対象に追加
@@ -179,8 +181,21 @@
         function draw() {
             trackball.update();
             renderer.render(scene, camera);
+            // オブジェクトが平面にない場合の調整
             for(var i= 0; i < lathes.length; i++){
                 lathes[i].position.setZ(floor*5);
+                if(lathes[i].position.getX() > cubeX) {
+                    lathes[i].position.setX(cubeX);
+                }
+                if(lathes[i].position.getX() < -1*cubeX) {
+                    lathes[i].position.setX(-1*cubeX);
+                }
+                if(lathes[i].position.getY() > cubeX) {
+                    lathes[i].position.setY(cubeX);
+                }
+                if(lathes[i].position.getY() < -1*cubeX) {
+                    lathes[i].position.setY(-1*cubeX);
+                }
             }
             requestAnimationFrame(draw);
         }
