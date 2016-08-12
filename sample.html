@@ -130,7 +130,7 @@
             directionalLight.shadow.camera.bottom = -100; // 下
             directionalLight.shadow.camera.near = 0; // 手前
             directionalLight.shadow.camera.far = 300; // 奥
-            
+
             // シーンへ光源を追加
             scene.add(directionalLight);
         }
@@ -153,14 +153,24 @@
             grid.rotation.set(Math.PI/2, 0, 0);
             objectGroup.add(grid);
 
+            // 平面オブジェクトの生成
+            var plane = new THREE.PlaneGeometry(200,200);
+            plane.receiveShadow = true;
+            plane.position.set(0,0,0);
+            objectGroup.add(plane);
+
 
             // 直方体を生成
             var height = 10;
             var cube1 =  createCube(cubeX, cubeY, height, false);
             // 影を描画オブジェクトにする。
             cube1.receiveShadow = true;
+            // 影の発生元にもなる。
+            cube1.castShadow = true;
             var cube2 =  createCube(cubeX, cubeY, 50 - height, true);
             cube2.position.setZ(height+10);
+            // 影の発生元になる。
+            cube2.castShadow = true;
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
