@@ -99,7 +99,6 @@
                 // マウスオーバーしたオブジェクトを不透明にする。
                 if(e) {
                     e.object.material.opacity = 1.0;
-                    e.object.material.position.setZ(floor*10);
                 }
                 // ドラッグ対象オブジェクトを無しとする。
                 dragObject = null;
@@ -180,6 +179,9 @@
         function draw() {
             trackball.update();
             renderer.render(scene, camera);
+            for(var i= 0; i < lathes.length; i++){
+                lathes[i].position.setZ(floor*5);
+            }
             requestAnimationFrame(draw);
         }
 
