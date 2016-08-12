@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>three.jsサンプル</title>
     <script src="./lib/three.min.js"></script>
+    <script src="./lib/TrackballControls.js"></script>
     <style>
         *{padding:0px; margin:0px}
         div#canvas-frame{
@@ -39,6 +40,7 @@
         }
 
         var camera;
+        var trackball;
         function initCamera() {
             camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
@@ -48,6 +50,24 @@
             camera.up.set(0,0,1);
             // カメラの中心位置ベクトルの設定
             camera.lookAt({x: 0, y: 0, z: 0});
+            // トラックボールオブジェクト生成
+            trackball = new THREE.TrackballControls(camera, canvasFrame);
+            // トラックボールによる回転を有効にする。
+            trackball.noRotate = false;
+            // 回転速度の設定
+            trackball.rotateSpeed = 2.0;
+            // トラックボールによるズームの有効化
+            trackball.noZoom = false;
+            // ズーム速度の設定
+            trackball.zoomSpeed = 1.0;
+            // トラックボールによるカメラ視野中心座標移動の有効化
+            trackball.noPan = false;
+            trackball.panSpeed = 1.0;
+            trackball.target = new THREE.Vector3(0,0,10);
+            // マウス左ボタンドラッグ終了で回転をストップさせる。
+            trackball.staticMoving = true;
+            // マウス左ボタンドラッグ終了後の回転の減衰定数設定
+            trackball.dynamicDampingFactor = 0.3;
         }
 
         var axis; // 軸オブジェクト
@@ -90,7 +110,9 @@
         }
 
         function draw() {
+            trackball.update();
             renderer.render(scene, camera);
+            requestAnimationFrame(draw);
         }
 
     </script>
