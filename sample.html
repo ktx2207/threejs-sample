@@ -185,7 +185,7 @@
 
             var geometry = new THREE.LatheGeometry(points, 50);
             geometry.computeVertexNormals();
-            var material = new THREE.MeshNormalMaterial();
+            var material = new THREE.MeshLambertMaterial({color: 0xFF8C00});
             // 回転体オブジェクトの生成
             var lathe = new THREE.Mesh(geometry, material);
             lathe.rotation.set(Math.PI/2,0,0);
