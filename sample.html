@@ -83,22 +83,29 @@
             dragcontrols.on('hoveron', function(e){
                 // トラックボールオブジェクトを無効化
                 trackball.enabled = false;
-//                // マウスドラッグ対象オブジェクトが既に存在する場合
-//                if(dragObject) dragObject.material.opacity = 1.0; // オブジェクトを不透明にする。
                 // マウスドラッグ対象オブジェクトを更新
                 dragObject = e.object;
-//                // マウスオーバーしたオブジェクトを半透明化
-//                dragObject.material.opacity = 0.5;
             });
 
             // マウスアウトイベントの登録
             dragcontrols.on('hoveroff', function(e){
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
-//                // マウスオーバーしたオブジェクトを不透明にする。
+//                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
                 if(e) {
                     e.object.position.setZ(floor*5);
-//                    e.object.material.opacity = 1.0;
+                    if(e.object.position.getX() > cubeX) {
+                        e.object.position.setX(cubeX);
+                    } else if(e.object.position.getX() < -1*cubeX) {
+                        e.object.position.setX(-1*cubeX);
+                    }
+
+                    if(e.object.position.getY() > cubeY) {
+                        e.object.position.setY(cubeY);
+                    } else if(e.object.position.getY() < -1*cubeY) {
+                        e.object.position.setY(-1*cubeY);
+                    }
+
                 }
                 // ドラッグ対象オブジェクトを無しとする。
                 dragObject = null;
