@@ -38,6 +38,8 @@
             canvasFrame.appendChild(renderer.domElement);
             // レンダラーオブジェクトのクリアーカラー設定
             renderer.setClearColor(0xEEEEEE, 1.0);
+            // 影を生成する
+            renderer.shadowMap.enabled = true;
             // シーンオブジェクトの生成
             scene = new THREE.Scene();
         }
@@ -120,6 +122,7 @@
             directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
             // 光源位置の設定
             directionalLight.position.set(50,30,100);
+            directionalLight.castShadow = true;
             // シーンへ光源を追加
             scene.add(directionalLight);
         }
@@ -146,6 +149,8 @@
             // 直方体を生成
             var height = 10;
             var cube1 =  createCube(cubeX, cubeY, height, false);
+            // 影を描画オブジェクトにする。
+            cube1.receiveShadow = true;
             var cube2 =  createCube(cubeX, cubeY, 50 - height, true);
             cube2.position.setZ(height+10);
             // 直方体をグループに追加
@@ -190,6 +195,8 @@
             var lathe = new THREE.Mesh(geometry, material);
             lathe.rotation.set(Math.PI/2,0,0);
             lathe.position.set(x,y,z);
+            // 影の生成元として指定
+            lathe.castShadow = true;
             lathes.push(lathe);
             return lathe;
         }
