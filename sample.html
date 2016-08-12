@@ -44,6 +44,7 @@
         var camera;
         var trackball;
         var dragcontrols;
+        var floor = 1;
         function initCamera() {
             camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
@@ -79,7 +80,6 @@
             dragcontrols.enabled = true;
             // ドラッグ対象オブジェクト
             var dragObject = null;
-
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
                 // トラックボールオブジェクトを無効化
@@ -97,7 +97,10 @@
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
                 // マウスオーバーしたオブジェクトを不透明にする。
-                if(e) e.object.material.opacity = 1.0;
+                if(e) {
+                    e.object.material.opacity = 1.0;
+                    e.object.material.position.setZ(floor*10);
+                }
                 // ドラッグ対象オブジェクトを無しとする。
                 dragObject = null;
             });
