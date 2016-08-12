@@ -96,6 +96,9 @@
             objectGroup.add(cube1);
             objectGroup.add(cube2);
 
+            // 回転体を追加
+            objectGroup.add(createLathe(10));
+
             // オブジェクトグループをシーンに追加
             scene.add(objectGroup);
         }
@@ -107,6 +110,24 @@
             var material = new THREE.MeshNormalMaterial({opacity: 0.2, transparent:transparent});
             // 直方体を生成
             return new THREE.Mesh(geometry, material);
+        }
+
+        // 回転体オブジェクトを生成する
+        function createLathe(height) {
+            var points = [];
+            points[0] = new THREE.Vector2(0,-60);
+            points[1] = new THREE.Vector2(22,-15);
+            points[2] = new THREE.Vector2(30,30);
+            points[3] = new THREE.Vector2(15,45);
+            points[4] = new THREE.Vector2(0,45);
+
+            var geometry = new THREE.LatheGeometry(points, 50);
+            geometry.computeVertexNormals();
+            var material = new THREE.MeshNormalMaterial();
+            // 回転体オブジェクトの生成
+            var lathe = new THREE.Mesh(geometry, material);
+            lathe.position.set(0,0,height);
+            return lathe;
         }
 
         function draw() {
