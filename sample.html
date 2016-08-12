@@ -94,15 +94,15 @@
 //                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
                 if(e) {
                     e.object.position.setZ(floor*5);
-                    if(e.object.position.getX() > cubeX) {
+                    if(e.object.position.x > cubeX) {
                         e.object.position.setX(cubeX);
-                    } else if(e.object.position.getX() < -1*cubeX) {
+                    } else if(e.object.position.x < -1*cubeX) {
                         e.object.position.setX(-1*cubeX);
                     }
 
-                    if(e.object.position.getY() > cubeY) {
+                    if(e.object.position.y > cubeY) {
                         e.object.position.setY(cubeY);
-                    } else if(e.object.position.getY() < -1*cubeY) {
+                    } else if(e.object.position.y < -1*cubeY) {
                         e.object.position.setY(-1*cubeY);
                     }
 
