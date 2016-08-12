@@ -45,6 +45,7 @@
         var trackball;
         var dragcontrols;
         var floor = 1;
+        var dragObject = null; // ドラッグ対象オブジェクト
         function initCamera() {
             camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
@@ -78,8 +79,7 @@
             dragcontrols = new THREE.DragControls(camera, null, renderer.domElement);
             // ドラッグコントロールを有効化
             dragcontrols.enabled = true;
-            // ドラッグ対象オブジェクト
-            var dragObject = null;
+
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
                 // トラックボールオブジェクトを無効化
@@ -182,21 +182,25 @@
             trackball.update();
             renderer.render(scene, camera);
             // オブジェクトが平面にない場合の調整
-            for(var i= 0; i < lathes.length; i++){
-                lathes[i].position.setZ(floor*5);
-                if(lathes[i].position.getX() > cubeX) {
-                    lathes[i].position.setX(cubeX);
-                }
-                if(lathes[i].position.getX() < -1*cubeX) {
-                    lathes[i].position.setX(-1*cubeX);
-                }
-                if(lathes[i].position.getY() > cubeX) {
-                    lathes[i].position.setY(cubeX);
-                }
-                if(lathes[i].position.getY() < -1*cubeX) {
-                    lathes[i].position.setY(-1*cubeX);
-                }
+            if(dragObject) {
+                dragObject.material.position.setZ(floor*5);
+
             }
+//            for(var i= 0; i < lathes.length; i++){
+//                lathes[i].position.setZ(floor*5);
+//                if(lathes[i].position.getX() > cubeX) {
+//                    lathes[i].position.setX(cubeX);
+//                }
+//                if(lathes[i].position.getX() < -1*cubeX) {
+//                    lathes[i].position.setX(-1*cubeX);
+//                }
+//                if(lathes[i].position.getY() > cubeY) {
+//                    lathes[i].position.setY(cubeY);
+//                }
+//                if(lathes[i].position.getY() < -1*cubeY) {
+//                    lathes[i].position.setY(-1*cubeY);
+//                }
+//            }
             requestAnimationFrame(draw);
         }
 
