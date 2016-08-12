@@ -127,7 +127,7 @@
             // 回転体オブジェクトの生成
             var lathe = new THREE.Mesh(geometry, material);
             lathe.position.set(0,0,height);
-            lathe.rotation.set(0,0,Math.PI/2);
+            lathe.rotation.set(0,Math.PI/2,0);
             return lathe;
         }
 
