@@ -137,12 +137,13 @@
             objectGroup.add(cube2);
 
             // 回転体を追加
-            objectGroup.add(createLathe(0,0,floor*5));
-            objectGroup.add(createLathe(20,0,floor*5));
-
-
+            var lathe = createLathe(0,0,floor*5);
+            objectGroup.add(lathe);
             // 回転体オブジェクトの配列をドラッグコントロール対象に追加
-            dragcontrols.setObjects(lathes);
+            dragcontrols.setObjects(lathe);
+            lathe = createLathe(20,0,floor*5);
+            objectGroup.add(lathe);
+            dragcontrols.setObjects(lathe);
 
             // オブジェクトグループをシーンに追加
             scene.add(objectGroup);
@@ -157,7 +158,6 @@
             return new THREE.Mesh(geometry, material);
         }
 
-        var lathes=[]; // 回転体オブジェクトの配列
         // 回転体オブジェクトを生成する
         function createLathe(x,y,z) {
             var points = [];
@@ -174,7 +174,6 @@
             var lathe = new THREE.Mesh(geometry, material);
             lathe.rotation.set(Math.PI/2,0,0);
             lathe.position.set(x,y,z);
-            lathes.push(lathe);
             return lathe;
         }
 
