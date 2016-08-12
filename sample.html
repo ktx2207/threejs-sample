@@ -97,9 +97,10 @@
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
 //                // マウスオーバーしたオブジェクトを不透明にする。
-//                if(e) {
+                if(e) {
+                    e.object.position.setZ(floor*5);
 //                    e.object.material.opacity = 1.0;
-//                }
+                }
                 // ドラッグ対象オブジェクトを無しとする。
                 dragObject = null;
             });
@@ -181,26 +182,6 @@
         function draw() {
             trackball.update();
             renderer.render(scene, camera);
-            // オブジェクトが平面にない場合の調整
-            if(dragObject) {
-                dragObject.position.setZ(floor*5);
-
-            }
-//            for(var i= 0; i < lathes.length; i++){
-//                lathes[i].position.setZ(floor*5);
-//                if(lathes[i].position.getX() > cubeX) {
-//                    lathes[i].position.setX(cubeX);
-//                }
-//                if(lathes[i].position.getX() < -1*cubeX) {
-//                    lathes[i].position.setX(-1*cubeX);
-//                }
-//                if(lathes[i].position.getY() > cubeY) {
-//                    lathes[i].position.setY(cubeY);
-//                }
-//                if(lathes[i].position.getY() < -1*cubeY) {
-//                    lathes[i].position.setY(-1*cubeY);
-//                }
-//            }
             requestAnimationFrame(draw);
         }
 
