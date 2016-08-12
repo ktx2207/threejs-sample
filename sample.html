@@ -21,6 +21,7 @@
         function threeStart() {
             initThree();
             initCamera();
+            initLight();
             initObject();
             draw();
         }
@@ -110,9 +111,17 @@
                 // ドラッグ対象オブジェクトを無しとする。
                 dragObject = null;
             });
+        }
 
 
-
+        // 光源の初期化
+        var directionalLight; // 平行光源オブジェクト
+        function initLight() {
+            directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+            // 光源位置の設定
+            directionalLight.position.set(50,20,100);
+            // シーンへ光源を追加
+            scene.add(directionalLight);
         }
 
         var axis; // 軸オブジェクト
@@ -159,7 +168,7 @@
             // 形状オブジェクトを生成
             var geometry = new THREE.BoxGeometry(x, y, z);
             // 材質オブジェクトを生成
-            var material = new THREE.MeshNormalMaterial({opacity: 0.2, transparent:transparent});
+            var material = new THREE.MeshPhongMaterial({color: 0x008B8B, specular: 0x5F9EA0,opacity: 0.2, transparent:transparent});
             // 直方体を生成
             return new THREE.Mesh(geometry, material);
         }
