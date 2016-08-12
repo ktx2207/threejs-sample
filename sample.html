@@ -134,7 +134,7 @@
             cube2.position.setZ(height+10);
             // 直方体をグループに追加
             objectGroup.add(cube1);
-            objectGroup.add(cube2);
+
 
             // 回転体を追加
             var lathe = createLathe(0,0,floor*5);
@@ -144,6 +144,7 @@
             lathe = createLathe(20,0,floor*5);
             objectGroup.add(lathe);
             dragcontrols.setObjects(lathe);
+            objectGroup.add(cube2);
 
             // オブジェクトグループをシーンに追加
             scene.add(objectGroup);
