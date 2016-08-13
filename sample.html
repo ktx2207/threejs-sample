@@ -270,7 +270,7 @@
 
         function changeFloor(obj) {
             floor = obj.options[obj.selectedIndex].value;
-            cube1.scale.z = floor*floorHeight;
+            cube1.scale.z = floor;
             cube1.position.setZ(floor*floorHeight/2);
             cube2.scale.z = cubeZ - floorHeight*floor;
             cube2.position.setZ(cubeZ/2);
