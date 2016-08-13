@@ -203,6 +203,7 @@
             cube1.castShadow = true;
             var cube2 =  createCube(cubeX, cubeY, cubeZ - height, true);
             cube2.position.setZ(cubeZ/2);
+            cube2.material.visible = false;
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
