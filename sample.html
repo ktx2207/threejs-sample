@@ -132,7 +132,7 @@
                 cube2.material.visible = true; // 現在の階より上を表示する。
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
-//                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
+                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
                 if(e) {
                     e.object.position.setZ(floor*floorHeight);
                     if(e.object.position.x > cubeX/2) {
@@ -186,6 +186,7 @@
         var cube2;
         var cube2Grid = [];
         var grid;
+        var latheArray = [];
         function initObject() {
             // グループを生成
             var objectGroup = new THREE.Group();
@@ -227,13 +228,22 @@
             objectGroup.add(cube1);
             objectGroup.add(cube2);
 
-            // 回転体を追加
-            var lathe = createLathe(0,0,floor*floorHeight);
-            lathe.tooltipValue = '機材1';
-            objectGroup.add(lathe);
-            lathe = createLathe(20,0,floor*floorHeight);
-            lathe.tooltipValue = '機材2';
-            objectGroup.add(lathe);
+            for(var i=0; i< floorCount; i++) {
+                latheArray.push(new Array());
+                for(j=0; j<2; j++) {
+                    var randX = Math.floor( Math.random() * 50 );
+                    var randY = Math.floor( Math.random() * 50 );
+                    // 回転体を追加
+                    var lathe = createLathe(randX,randY,floorCount*floorHeight);
+                    lathe.tooltipValue = '機材'+(i+1)+"-"+(j+1);
+                    latheArray[i].push(lathe);
+                    objectGroup.add(lathe);
+                    if(i != 0) {
+                        lathe.material.visible = false;
+                    }
+                }
+
+            }
 
 
             // 回転体オブジェクトの配列をドラッグコントロール対象に追加
@@ -291,6 +301,15 @@
             }
             for(var i=0; i < floor; i++) { // cube2のグリッドを現在の階より下は表示する。
                 cube2Grid[i].material.visible = true;
+            }
+            for(var i=0; i<latheArray.length; i++) {
+                if(i == floor -1) {
+                    latheArray[i][0].material.visible = true;
+                    latheArray[i][1].material.visible = true;
+                } else {
+                    latheArray[i][0].material.visible = false;
+                    latheArray[i][1].material.visible = false;
+                }
             }
         }
 
