@@ -55,7 +55,8 @@
             tooltipContext.fillStyle = "rgba(0,0,0,0.95)";
             tooltipTexture =  new THREE.Texture(tooltipCanvas);
             tooltipTexture.needsUpdate = true;
-            var sprite = new THREE.SpriteMaterial( { map: tooltipTexture} );
+            var spriteMaterial = new THREE.SpriteMaterial( { map: tooltipTexture} );
+            var sprite = new THREE.Points(spriteMaterial);
             sprite.position.set( 50, 50, 0 );
             scene.add(sprite);
         }
