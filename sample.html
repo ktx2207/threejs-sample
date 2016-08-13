@@ -106,7 +106,7 @@
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
                 cube2.material.visible = false; // 現在の階より上を非表示にする。
-                for(var i=0; i< floorCount; i++) { // cube2のグリッドも非表示にする。
+                for(var i=0; i< floor; i++) { // cube2のグリッドも非表示にする。
                     cube2Grid[i].material.visible = false;
                 }
                 // トラックボールオブジェクトを無効化
@@ -132,7 +132,7 @@
             // マウスアウトイベントの登録
             dragcontrols.on('hoveroff', function(e){
                 cube2.material.visible = true; // 現在の階より上を表示する。
-                for(var i=0; i< floorCount; i++) { // cube2のグリッドも表示する。
+                for(var i=0; i< floor; i++) { // cube2のグリッドも表示する。
                     cube2Grid[i].material.visible = true;
                 }
                 // トラックボールオブジェクトを有効化
@@ -205,6 +205,7 @@
                 var g = new THREE.GridHelper(cubeX/2, 0);
                 g.rotation.set(Math.PI/2, 0, 0);
                 g.position.set(0,0,(i+1)*floorHeight);
+                g.material.visible = false;
                 cube2Grid.push(g);
                 objectGroup.add(g);
             }
