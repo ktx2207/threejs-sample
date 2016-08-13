@@ -67,6 +67,7 @@
         var trackball;
         var dragcontrols;
         var floor = 2;
+        var floorHeight = 10;
         function initCamera() {
             camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
@@ -119,7 +120,7 @@
                     tooltipContext.fillRect( 2,2, width+4,20+4 );
                     tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
                     tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
-                    tooltipSprite.position.set( dragObject.position.x-50, dragObject.position.y+100, floor*10+10 );
+                    tooltipSprite.position.set( dragObject.position.x-50, dragObject.position.y+100, floor*floorHeight+10 );
                     tooltipTexture.needsUpdate = true;
                 }
             });
@@ -187,7 +188,7 @@
             // グリッドオブジェクトの生成
             var grid = new THREE.GridHelper(cubeX/2, 10);
             grid.rotation.set(Math.PI/2, 0, 0);
-            grid.position.set(0,0,floor*10-5)
+            grid.position.set(0,0,floor*floorHeight-5)
             objectGroup.add(grid);
 
             // 平面オブジェクトの生成
@@ -200,23 +201,23 @@
 
 
             // 直方体を生成
-            var height = 10;
-            var cube1 =  createCube(cubeX, cubeY, height, false);
+
+            var cube1 =  createCube(cubeX, cubeY, floorHeight*floor, false);
             // 影を描画オブジェクトにする。
             cube1.receiveShadow = true;
             // 影の発生元にもなる。
             cube1.castShadow = true;
-            cube2 = createCube(cubeX, cubeY, cubeZ - height, true);
+            cube2 = createCube(cubeX, cubeY, cubeZ - floorHeight*floor, true);
             cube2.position.setZ(cubeZ/2);
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
 
             // 回転体を追加
-            var lathe = createLathe(0,0,floor*5);
+            var lathe = createLathe(0,0,floor*floorHeight);
             lathe.tooltipValue = '機材1';
             objectGroup.add(lathe);
-            lathe = createLathe(20,0,floor*5);
+            lathe = createLathe(20,0,floor*floorHeight);
             lathe.tooltipValue = '機材2';
             objectGroup.add(lathe);
 
