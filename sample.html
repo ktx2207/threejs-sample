@@ -122,7 +122,7 @@
                     // マウス位置
                     var mouseX = ( e.clientX / window.innerWidth ) * 2 - 1;
                     var mouseY = - ( e.clientY / window.innerHeight ) * 2 + 1;
-                    tooltipSprite.position.set( mouseX, mouseY, floor*10 );
+                    tooltipSprite.position.set( mouseX-5, mouseY-5, floor*10+5 );
                     tooltipTexture.needsUpdate = true;
                 }
             });
