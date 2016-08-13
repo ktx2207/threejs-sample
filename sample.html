@@ -103,6 +103,7 @@
 
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
+                cube2.material.visible = false; // 現在の階より上を非表示にする。
                 // トラックボールオブジェクトを無効化
                 trackball.enabled = false;
                 // マウスドラッグ対象オブジェクトを更新
@@ -118,12 +119,14 @@
                     tooltipContext.fillRect( 2,2, width+4,20+4 );
                     tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
                     tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
+                    tooltipSprite.position.set( e.clientX, e.clientY - 20, floor*10+5 );
                     tooltipTexture.needsUpdate = true;
                 }
             });
 
             // マウスアウトイベントの登録
             dragcontrols.on('hoveroff', function(e){
+                cube2.material.visible = true; // 現在の階より上を表示する。
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
 //                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
@@ -176,6 +179,7 @@
         var cubeX = 100;
         var cubeY = 100;
         var cubeZ = 200;
+        var cube2;
         function initObject() {
             // グループを生成
             var objectGroup = new THREE.Group();
@@ -201,9 +205,8 @@
             cube1.receiveShadow = true;
             // 影の発生元にもなる。
             cube1.castShadow = true;
-            var cube2 =  createCube(cubeX, cubeY, cubeZ - height, true);
+            cube2 = createCube(cubeX, cubeY, cubeZ - height, true);
             cube2.position.setZ(cubeZ/2);
-            cube2.material.visible = false;
             // 直方体をグループに追加
             objectGroup.add(cube1);
             objectGroup.add(cube2);
