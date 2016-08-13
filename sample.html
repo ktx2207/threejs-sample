@@ -183,12 +183,14 @@
         var cubeZ = floorCount*floorHeight;
         var cube1;
         var cube2;
+        var cube2Grid = [];
+        var grid;
         function initObject() {
             // グループを生成
             var objectGroup = new THREE.Group();
 
             // グリッドオブジェクトの生成
-            var grid = new THREE.GridHelper(cubeX/2, 10);
+            grid = new THREE.GridHelper(cubeX/2, 10);
             grid.rotation.set(Math.PI/2, 0, 0);
             grid.position.set(0,0,floor*floorHeight)
             objectGroup.add(grid);
@@ -197,6 +199,7 @@
                 var g = new THREE.GridHelper(cubeX/2, 0);
                 g.rotation.set(Math.PI/2, 0, 0);
                 g.position.set(0,0,(i+1)*floorHeight);
+                cube2Grid.push(g);
                 objectGroup.add(g);
             }
 
@@ -280,6 +283,7 @@
             floor = obj.options[obj.selectedIndex].value;
             cube1.scale.z = floor;
             cube1.position.setZ(floor*floorHeight/2);
+            grid.position.setZ(floor*floorHeight);
         }
 
     </script>
@@ -293,6 +297,21 @@
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
         </select>
     </div>
 </body>
