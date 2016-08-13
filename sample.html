@@ -56,7 +56,8 @@
             tooltipTexture =  new THREE.Texture(tooltipCanvas);
             tooltipTexture.needsUpdate = true;
             var spriteMaterial = new THREE.SpriteMaterial( { map: tooltipTexture} );
-            var sprite = new THREE.Points(spriteMaterial);
+            var sprite = new THREE.Sprite( spriteMaterial );
+            sprite.scale.set(200,100,1.0);
             sprite.position.set( 50, 50, 0 );
         }
 
