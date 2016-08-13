@@ -105,7 +105,7 @@
 
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
-                if(e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
+                if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
                     return;
                 }
                 cube2.material.visible = false; // 現在の階より上を非表示にする。
@@ -131,7 +131,7 @@
 
             // マウスアウトイベントの登録
             dragcontrols.on('hoveroff', function(e){
-                if(e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
+                if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
                     return;
                 }
                 cube2.material.visible = true; // 現在の階より上を表示する。
