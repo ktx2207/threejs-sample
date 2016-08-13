@@ -49,6 +49,7 @@
         var tooltipContext;
         var tooltipTexture;
         function initTooltip() {
+            renderer.getContext()
             var tooltipCanvas = document.createElement('canvas');
             tooltipContext = tooltipCanvas.getContext('2d');
             tooltipContext.font = "Bold 20px Arial";
@@ -58,7 +59,7 @@
             var spriteMaterial = new THREE.SpriteMaterial( { map: tooltipTexture} );
             tooltipSprite = new THREE.Sprite( spriteMaterial );
             tooltipSprite.scale.set(200,100,1.0);
-            tooltipSprite.position.set( 50, 50, 0 );
+            tooltipSprite.position.set( 50, 50, 200 );
             scene.add(tooltipSprite);
         }
 
