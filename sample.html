@@ -132,7 +132,7 @@
                 trackball.enabled = true;
 //                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
                 if(e) {
-                    e.object.position.setZ(floor*5);
+                    e.object.position.setZ(floor*floorHeight);
                     if(e.object.position.x > cubeX/2) {
                         e.object.position.setX(cubeX/2);
                     } else if(e.object.position.x < -1*cubeX/2) {
