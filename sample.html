@@ -44,6 +44,22 @@
             scene = new THREE.Scene();
         }
 
+        var tooltipCanvas;
+        var tooltipContext;
+        var tooltipTexture;
+        function initTooltip() {
+            tooltipCanvas = document.createElement('canvas');
+            tooltipContext = tooltipCanvas.getContext('2d');
+            tooltipContext.font = "Bold 20px Arial";
+            tooltipContext.fillStyle = "rgba(0,0,0,0.95)";
+            tooltipTexture =  new THREE.Texture(tooltipCanvas);
+            tooltipTexture.needsUpdate = true;
+            var sprite = new THREE.SpriteMaterial( { map: tooltipTexture, useScreenCoordinates: true} );
+            sprite.scale.set(200,100,1.0);
+            sprite.position.set( 50, 50, 0 );
+            scene.add(sprite);
+        }
+
         var camera;
         var trackball;
         var dragcontrols;
@@ -88,6 +104,19 @@
                 trackball.enabled = false;
                 // マウスドラッグ対象オブジェクトを更新
                 dragObject = e.object;
+                // tooltipを表示する。
+                if(dragObject.tooltipValue) {
+                    tooltipContext.clearRect(0,0,640,480);
+                    var metrics = tooltipContext.measureText(dragObject.tooltipValue);
+                    var width = metrics.width;
+                    tooltipContext.fillStyle = "rgba(0,0,0,0.95)"; // black border
+                    tooltipContext.fillRect( 0,0, width+8,20+8);
+                    tooltipContext.fillStyle = "rgba(255,255,255,0.95)"; // white filler
+                    tooltipContext.fillRect( 2,2, width+4,20+4 );
+                    tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
+                    tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
+                    tooltipTexture.needsUpdate = true;
+                }
             });
 
             // マウスアウトイベントの登録
@@ -107,6 +136,11 @@
                         e.object.position.setY(cubeY/2);
                     } else if(e.object.position.y < -1*cubeY/2) {
                         e.object.position.setY(-1*cubeY/2);
+                    }
+                    // tooltipを非表示にする。
+                    if(e.object.tooltipValue){
+                        tooltipContext.clearRect(0,0,300,300);
+                        tooltipTexture.needsUpdate = true;
                     }
 
                 }
@@ -171,8 +205,12 @@
             objectGroup.add(cube2);
 
             // 回転体を追加
-            objectGroup.add(createLathe(0,0,floor*5));
-            objectGroup.add(createLathe(20,0,floor*5));
+            var lathe = createLathe(0,0,floor*5);
+            lathe.tooltipValue = '機材1';
+            objectGroup.add(lathe);
+            lathe = createLathe(20,0,floor*5);
+            lathe.tooltipValue = '機材2';
+            objectGroup.add(lathe);
 
 
             // 回転体オブジェクトの配列をドラッグコントロール対象に追加
