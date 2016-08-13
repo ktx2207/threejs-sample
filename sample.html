@@ -111,9 +111,9 @@
                     tooltipContext.clearRect(0,0,640,480);
                     var metrics = tooltipContext.measureText(dragObject.tooltipValue);
                     var width = metrics.width;
-                    tooltipContext.fillStyle = "rgba(0,0,0,0.95)"; // black border
+                    tooltipContext.fillStyle = "rgba(0,0,0,1)"; // black border
                     tooltipContext.fillRect( 0,0, width+8,20+8);
-                    tooltipContext.fillStyle = "rgba(255,255,255,0.95)"; // white filler
+                    tooltipContext.fillStyle = "rgba(255,255,255,1)"; // white filler
                     tooltipContext.fillRect( 2,2, width+4,20+4 );
                     tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
                     tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
