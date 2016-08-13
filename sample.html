@@ -45,21 +45,21 @@
             scene = new THREE.Scene();
         }
 
-        var tooltipCanvas;
+        var tooltipSprite;
         var tooltipContext;
         var tooltipTexture;
         function initTooltip() {
-            tooltipCanvas = document.createElement('canvas');
+            var tooltipCanvas = document.createElement('canvas');
             tooltipContext = tooltipCanvas.getContext('2d');
             tooltipContext.font = "Bold 20px Arial";
             tooltipContext.fillStyle = "rgba(0,0,0,0.95)";
             tooltipTexture =  new THREE.Texture(tooltipCanvas);
             tooltipTexture.needsUpdate = true;
             var spriteMaterial = new THREE.SpriteMaterial( { map: tooltipTexture} );
-            var sprite = new THREE.Sprite( spriteMaterial );
-            sprite.scale.set(200,100,1.0);
-            sprite.position.set( 50, 50, 0 );
-            scene.add(sprite);
+            tooltipSprite = new THREE.Sprite( spriteMaterial );
+            tooltipSprite.scale.set(200,100,1.0);
+            tooltipSprite.position.set( 50, 50, 0 );
+            scene.add(tooltipSprite);
         }
 
         var camera;
@@ -117,6 +117,7 @@
                     tooltipContext.fillRect( 2,2, width+4,20+4 );
                     tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
                     tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
+                    tooltipSprite.position.set(e.clientX, e.clientY - 20, floor*10+10 ); // tooltipの表示位置を更新
                     tooltipTexture.needsUpdate = true;
                 }
             });
