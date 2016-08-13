@@ -133,7 +133,7 @@
             dragcontrols.on('hoveroff', function(e){
                 cube2.material.visible = true; // 現在の階より上を表示する。
                 for(var i=0; i< floorCount; i++) { // cube2のグリッドも表示する。
-                    cube2Grid[i].material.visible = false;
+                    cube2Grid[i].material.visible = true;
                 }
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
