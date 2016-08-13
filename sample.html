@@ -180,6 +180,7 @@
         var cubeX = 100;
         var cubeY = 100;
         var cubeZ = 200;
+        var cube1;
         var cube2;
         function initObject() {
             // グループを生成
@@ -268,9 +269,26 @@
             requestAnimationFrame(draw);
         }
 
+        function changeFloor(obj) {
+            floor = obj.options[obj.selectedIndex].value;
+            cube1.scale.z = floor*floorHeight;
+            cube1.position.setZ(floor*floorHeight/2);
+            cube2.scale.z = cubeZ - floorHeight*floor;
+            cube2.position.setZ(cubeZ/2);
+        }
+
     </script>
 </head>
 <body>
     <div id="canvas-frame"></div>
+    <div>Floor(階):
+        <select name="floor" onchange="changeFloor(this);">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
 </body>
 </html>
