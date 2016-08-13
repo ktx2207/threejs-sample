@@ -190,8 +190,8 @@
             objectGroup.add(grid);
 
             // 平面オブジェクトの生成
-            var planeGeometry = new THREE.PlaneGeometry(200,200);
-            var planeMaterial = new THREE.MeshLambertMaterial({color: 0xFF8C00});
+            var planeGeometry = new THREE.PlaneGeometry(400,400);
+            var planeMaterial = new THREE.MeshLambertMaterial({color: 0xDCDCDC});
             var plane = new THREE.Mesh(planeGeometry, planeMaterial);
             plane.receiveShadow = true;
             plane.position.set(0,0,0);
