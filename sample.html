@@ -119,7 +119,7 @@
                     tooltipContext.fillRect( 2,2, width+4,20+4 );
                     tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
                     tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
-                    tooltipSprite.position.set( dragObject.position.x, dragObject.position.y, floor*10 );
+                    tooltipSprite.position.set( dragObject.position.x+50, dragObject.position.y+50, floor*10 );
                     tooltipTexture.needsUpdate = true;
                 }
             });
