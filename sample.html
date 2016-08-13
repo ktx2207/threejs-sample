@@ -203,6 +203,7 @@
             // 直方体を生成
 
             var cube1 =  createCube(cubeX, cubeY, floorHeight*floor, false);
+            cube1.position.setZ(cube1.position.z/2);
             // 影を描画オブジェクトにする。
             cube1.receiveShadow = true;
             // 影の発生元にもなる。
@@ -231,7 +232,7 @@
 
         function createCube(x, y, z, transparent) {
             // 形状オブジェクトを生成
-            var geometry = new THREE.BoxGeometry(x, y, z*2);
+            var geometry = new THREE.BoxGeometry(x, y, z);
             // 材質オブジェクトを生成
             var material = new THREE.MeshPhongMaterial({color: 0x008B8B, specular: 0x5F9EA0, shininess: 30, opacity: 0.2, transparent:transparent});
             // 直方体を生成
