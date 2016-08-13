@@ -131,6 +131,9 @@
 
             // マウスアウトイベントの登録
             dragcontrols.on('hoveroff', function(e){
+                if(e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
+                    return;
+                }
                 cube2.material.visible = true; // 現在の階より上を表示する。
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
