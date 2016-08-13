@@ -105,8 +105,10 @@
 
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
+                if(!dragObject.material.visible) { // 回転体オブジェクトが非表示の場合は無効とする。ｓ
+                    return;
+                }
                 cube2.material.visible = false; // 現在の階より上を非表示にする。
-
                 // トラックボールオブジェクトを無効化
                 trackball.enabled = false;
                 // マウスドラッグ対象オブジェクトを更新
@@ -234,7 +236,7 @@
                     var randX = Math.floor( Math.random() * 50 );
                     var randY = Math.floor( Math.random() * 50 );
                     // 回転体を追加
-                    var lathe = createLathe(randX,randY,floorCount*floorHeight);
+                    var lathe = createLathe(randX,randY,(i+1)*floorHeight);
                     lathe.tooltipValue = '機材'+(i+1)+"-"+(j+1);
                     latheArray[i].push(lathe);
                     objectGroup.add(lathe);
