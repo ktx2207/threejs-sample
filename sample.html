@@ -106,6 +106,9 @@
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
                 cube2.material.visible = false; // 現在の階より上を非表示にする。
+                for(var i=0; i< floorCount; i++) { // cube2のグリッドも非表示にする。
+                    cube2Grid[i].material.visible = false;
+                }
                 // トラックボールオブジェクトを無効化
                 trackball.enabled = false;
                 // マウスドラッグ対象オブジェクトを更新
@@ -129,6 +132,9 @@
             // マウスアウトイベントの登録
             dragcontrols.on('hoveroff', function(e){
                 cube2.material.visible = true; // 現在の階より上を表示する。
+                for(var i=0; i< floorCount; i++) { // cube2のグリッドも表示する。
+                    cube2Grid[i].material.visible = false;
+                }
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
 //                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
