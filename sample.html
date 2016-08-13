@@ -119,10 +119,7 @@
                     tooltipContext.fillRect( 2,2, width+4,20+4 );
                     tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
                     tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
-                    // マウス位置
-                    var mouseX = ( e.clientX / window.innerWidth ) * 2 - 1;
-                    var mouseY = - ( e.clientY / window.innerHeight ) * 2 + 1;
-                    tooltipSprite.position.set( mouseX-5, mouseY-5, floor*10+5 );
+                    tooltipSprite.position.set( dragObject.position.x, dragObject.position.y, floor*10 );
                     tooltipTexture.needsUpdate = true;
                 }
             });
