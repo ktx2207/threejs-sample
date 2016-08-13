@@ -195,8 +195,8 @@
 
             for(var i=0; i < floorCount; i++) {
                 var g = new THREE.GridHelper(cubeX/2, 0);
-                grid.rotation.set(Math.PI/2, 0, 0);
-                grid.position.set(0,0,(i+1)*floorHeight);
+                g.rotation.set(Math.PI/2, 0, 0);
+                g.position.set(0,0,(i+1)*floorHeight);
                 objectGroup.add(g);
             }
 
