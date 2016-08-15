@@ -231,7 +231,7 @@
             scene.add(directionalLight);
         }
 
-        function initGrid(objectGroup, floor, floorHeight) {
+        function initGrid(objectGroup, floor, floorHeight, cubeX) {
             // グリッドオブジェクトの生成
             var grid = new THREE.GridHelper(cubeX/2, 10);
             grid.rotation.set(Math.PI/2, 0, 0);
@@ -240,7 +240,7 @@
             return grid;
         }
 
-        function initCube2Grid(objectGroup, floorHeight, floorCount) {
+        function initCube2Grid(objectGroup, floorHeight, floorCount, cubeX) {
             var cube2Grid = [];
             for(var i=0; i < floorCount; i++) {
                 var g = new THREE.GridHelper(cubeX/2, 0);
@@ -256,8 +256,8 @@
 
         function Building(scene, dragcontrols, objectGroup, floor, floorHeight, floorCount, cubeX, cubeY, cubeZ) {
             // グリッドオブジェクトを生成
-            this.grid = initGrid(objectGroup, floor, floorHeight);
-            this.cube2Grid = initCube2Grid(objectGroup, floorHeight, floorCount);
+            this.grid = initGrid(objectGroup, floor, floorHeight, cubeX);
+            this.cube2Grid = initCube2Grid(objectGroup, floorHeight, floorCount, cubeX);
 
             // 平面オブジェクトの生成
             var planeGeometry = new THREE.PlaneGeometry(400,400);
