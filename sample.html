@@ -30,7 +30,13 @@
             var dragcontrols = initDragControl(renderer, camera);
             initLight(scene);
             initObject(scene, dragcontrols);
-            draw(renderer, scene, camera);
+
+            var drawFunc = function draw(){
+                trackball.update();
+                renderer.render(scene, camera);
+                requestAnimationFrame(draw());
+            }
+            drawFunc();
         }
 
 
@@ -294,12 +300,6 @@
             lathe.castShadow = true;
             lathes.push(lathe);
             return lathe;
-        }
-
-        function draw(renderer, scene, camera) {
-            trackball.update();
-            renderer.render(scene, camera);
-            requestAnimationFrame(draw(renderer, scene, camera));
         }
 
         function changeFloor(obj) {
