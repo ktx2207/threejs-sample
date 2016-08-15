@@ -90,6 +90,31 @@
             initLight(scene);
             initObject(scene, dragcontrols);
 
+            // ドロップダウン
+            var select = document.getElementById('floor');
+            // ドロップダウン変更時
+            select.onchange = function() {
+                floor = this.options[this.selectedIndex].value;
+                cube1.scale.z = floor;
+                cube1.position.setZ(floor*floorHeight/2);
+                grid.position.setZ(floor*floorHeight);
+                for(var i=floor; i< floorCount; i++) { // cube2のグリッドを現在の階より上は非表示にする。
+                    cube2Grid[i].material.visible = false;
+                }
+                for(var i=0; i < floor; i++) { // cube2のグリッドを現在の階より下は表示する。
+                    cube2Grid[i].material.visible = true;
+                }
+                for(var i=0; i<latheArray.length; i++) {
+                    if(i == floor -1) {
+                        latheArray[i][0].material.visible = true;
+                        latheArray[i][1].material.visible = true;
+                    } else {
+                        latheArray[i][0].material.visible = false;
+                        latheArray[i][1].material.visible = false;
+                    }
+                }
+            }
+
             var drawFunc = function draw(){
                 trackball.update();
                 renderer.render(scene, camera);
@@ -298,34 +323,12 @@
             return lathe;
         }
 
-        function changeFloor(obj) {
-            floor = obj.options[obj.selectedIndex].value;
-            cube1.scale.z = floor;
-            cube1.position.setZ(floor*floorHeight/2);
-            grid.position.setZ(floor*floorHeight);
-            for(var i=floor; i< floorCount; i++) { // cube2のグリッドを現在の階より上は非表示にする。
-                cube2Grid[i].material.visible = false;
-            }
-            for(var i=0; i < floor; i++) { // cube2のグリッドを現在の階より下は表示する。
-                cube2Grid[i].material.visible = true;
-            }
-            for(var i=0; i<latheArray.length; i++) {
-                if(i == floor -1) {
-                    latheArray[i][0].material.visible = true;
-                    latheArray[i][1].material.visible = true;
-                } else {
-                    latheArray[i][0].material.visible = false;
-                    latheArray[i][1].material.visible = false;
-                }
-            }
-        }
-
     </script>
 </head>
 <body>
     <div id="canvas-frame"></div>
     <div>Floor(階):
-        <select name="floor" onchange="changeFloor(this);">
+        <select id="floor" >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
