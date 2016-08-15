@@ -26,7 +26,7 @@
             var scene = new THREE.Scene();
             var tooltip = new Tooltip(scene);
             var camera = initCamera(canvasFrame);
-            initTrackball(camera, canvasFrame);
+            var trackball = initTrackball(camera, canvasFrame);
             var dragcontrols = initDragControl(renderer, camera);
             var dragObject = null; // ドラッグ対象オブジェクト
             // マウスオーバーイベントの登録
@@ -128,7 +128,6 @@
             scene.add(this.sprite);
         }
 
-        var trackball;
         var floor = 1;
         var floorHeight = 10;
         var floorCount = 20;
@@ -164,6 +163,8 @@
             trackball.staticMoving = true;
             // マウス左ボタンドラッグ終了後の回転の減衰定数設定
             trackball.dynamicDampingFactor = 0.3;
+
+            return trackball;
         }
 
         function initDragControl(renderer, camera) {
@@ -193,7 +194,6 @@
             scene.add(directionalLight);
         }
 
-        var axis; // 軸オブジェクト
         var cubeX = 100;
         var cubeY = 100;
         var cubeZ = floorCount*floorHeight;
