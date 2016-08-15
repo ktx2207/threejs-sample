@@ -171,7 +171,7 @@
 
         function initTrackball(camera, canvasFrame) {
             // トラックボールオブジェクト生成
-            trackball = new THREE.TrackballControls(camera, canvasFrame);
+            var trackball = new THREE.TrackballControls(camera, canvasFrame);
             // トラックボールによる回転を有効にする。
             trackball.noRotate = false;
             // 回転速度の設定
