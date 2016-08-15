@@ -34,7 +34,7 @@
             var drawFunc = function draw(){
                 trackball.update();
                 renderer.render(scene, camera);
-                requestAnimationFrame(draw());
+                requestAnimationFrame(draw);
             }
             drawFunc();
         }
