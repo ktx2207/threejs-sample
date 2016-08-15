@@ -130,12 +130,12 @@
                 }
             }
 
-            var drawFunc = function draw(){
+            // 描画処理を実行
+            (function draw(){
                 trackball.update();
                 renderer.render(scene, camera);
                 requestAnimationFrame(draw);
-            }
-            drawFunc();
+            })();
         }
 
 
@@ -294,7 +294,7 @@
                     // 回転体を追加
                     var lathe = createLathe(randX,randY,(i+1)*floorHeight);
                     lathes.push(lathe);
-                    lathe.tooltipValue = 'オブジェクト'+(i+1)+"-"+(j+1);
+                    lathe.tooltipValue = 'obj'+(i+1)+"-"+(j+1);
                     this.latheArray[i].push(lathe);
                     objectGroup.add(lathe);
                     if(i != 0) {
