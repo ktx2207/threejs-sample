@@ -18,20 +18,24 @@
         window.addEventListener("load", function() {
            threeStart();
         });
+
         function threeStart() {
-            initThree();
-            initTooltip();
-            initCamera();
-            initLight();
-            initObject();
-            draw();
+            var canvasFrame = document.getElementById('canvas-frame');
+            var renderer = initThree(canvasFrame);
+            // シーンオブジェクトの生成
+            var scene = new THREE.Scene();
+            initTooltip(scene);
+            var camera = initCamera(canvasFrame);
+            initTrackball(camera, canvasFrame);
+            var dragcontrols = initDragControl(renderer, camera);
+            initLight(scene);
+            initObject(dragcontrols);
+            draw(camera);
         }
 
-        var renderer,scene,canvasFrame;
 
-        function initThree() {
-            canvasFrame = document.getElementById('canvas-frame');
-            renderer = new  THREE.WebGLRenderer();
+        function initThree(canvasFrame) {
+            var renderer = new  THREE.WebGLRenderer();
             if (!renderer) alert("three.jsの初期化に失敗しました。");
             // レンダラーオブジェクトのサイズ指定
             renderer.setSize(canvasFrame.clientWidth, canvasFrame.clientHeight);
@@ -41,15 +45,13 @@
             renderer.setClearColor(0x87CEEB, 1.0);
             // 影を生成する
             renderer.shadowMap.enabled = true;
-            // シーンオブジェクトの生成
-            scene = new THREE.Scene();
+            return renderer;
         }
 
         var tooltipSprite;
         var tooltipContext;
         var tooltipTexture;
-        function initTooltip() {
-            renderer.getContext()
+        function initTooltip(scene) {
             var tooltipCanvas = document.createElement('canvas');
             tooltipContext = tooltipCanvas.getContext('2d');
             tooltipContext.font = "Bold 20px Arial";
@@ -63,14 +65,12 @@
             scene.add(tooltipSprite);
         }
 
-        var camera;
         var trackball;
-        var dragcontrols;
         var floor = 1;
         var floorHeight = 10;
         var floorCount = 20;
-        function initCamera() {
-            camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
+        function initCamera(canvasFrame) {
+            var camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
             // カメラ位置設定
             camera.position.set(300,300,180);
@@ -79,6 +79,10 @@
             // カメラの中心位置ベクトルの設定
             camera.lookAt({x: 0, y: 0, z: 0});
 
+            return camera;
+        }
+
+        function initTrackball(camera, canvasFrame) {
             // トラックボールオブジェクト生成
             trackball = new THREE.TrackballControls(camera, canvasFrame);
             // トラックボールによる回転を有効にする。
@@ -97,9 +101,13 @@
             trackball.staticMoving = true;
             // マウス左ボタンドラッグ終了後の回転の減衰定数設定
             trackball.dynamicDampingFactor = 0.3;
+        }
+
+        function initDragControl(renderer, camera) {
+
             var dragObject = null; // ドラッグ対象オブジェクト
             // ドラッグコントロールオブジェクトの生成
-            dragcontrols = new THREE.DragControls(camera, null, renderer.domElement);
+            var dragcontrols = new THREE.DragControls(camera, null, renderer.domElement);
             // ドラッグコントロールを有効化
             dragcontrols.enabled = true;
 
@@ -161,13 +169,13 @@
                 // ドラッグ対象オブジェクトを無しとする。
                 dragObject = null;
             });
+            return dragcontrols;
         }
 
 
         // 光源の初期化
-        var directionalLight; // 平行光源オブジェクト
-        function initLight() {
-            directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+        function initLight(scene) {
+            var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1.0); // 平行光源オブジェクト
             // 光源位置の設定
             directionalLight.position.set(50,30,100);
             directionalLight.castShadow = true;
@@ -192,7 +200,7 @@
         var cube2Grid = [];
         var grid;
         var latheArray = [];
-        function initObject() {
+        function initObject(scene, dragcontrols) {
             // グループを生成
             var objectGroup = new THREE.Group();
 
@@ -249,8 +257,6 @@
                 }
 
             }
-
-
             // 回転体オブジェクトの配列をドラッグコントロール対象に追加
             dragcontrols.setObjects(lathes);
 
@@ -290,10 +296,10 @@
             return lathe;
         }
 
-        function draw() {
+        function draw(renderer, scene, camera) {
             trackball.update();
             renderer.render(scene, camera);
-            requestAnimationFrame(draw);
+            requestAnimationFrame(draw(renderer, scene, camera));
         }
 
         function changeFloor(obj) {
