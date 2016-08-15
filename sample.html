@@ -42,7 +42,7 @@
                 // tooltipを表示する。
                 if(dragObject.tooltipValue) {
                     tooltip.context.clearRect(0,0,640,480);
-                    var metrics = tooltipContext.measureText(dragObject.tooltipValue);
+                    var metrics = tooltip.context.measureText(dragObject.tooltipValue);
                     var width = metrics.width;
                     tooltip.context.fillStyle = "rgba(0,0,0,1)"; // black border
                     tooltip.context.fillRect( 0,0, width+8,20+8);
@@ -112,7 +112,7 @@
             renderer.shadowMap.enabled = true;
             return renderer;
         }
-        
+
         function Tooltip(scene) {
             var tooltipCanvas = document.createElement('canvas');
             this.context = tooltipCanvas.getContext('2d');
