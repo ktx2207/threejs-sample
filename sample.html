@@ -24,10 +24,69 @@
             var renderer = initThree(canvasFrame);
             // シーンオブジェクトの生成
             var scene = new THREE.Scene();
-            initTooltip(scene);
+            var tooltip = new Tooltip(scene);
             var camera = initCamera(canvasFrame);
             initTrackball(camera, canvasFrame);
             var dragcontrols = initDragControl(renderer, camera);
+            var dragObject = null; // ドラッグ対象オブジェクト
+            // マウスオーバーイベントの登録
+            dragcontrols.on('hoveron', function(e){
+                if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
+                    return;
+                }
+                cube2.material.visible = false; // 現在の階より上を非表示にする。
+                // トラックボールオブジェクトを無効化
+                trackball.enabled = false;
+                // マウスドラッグ対象オブジェクトを更新
+                dragObject = e.object;
+                // tooltipを表示する。
+                if(dragObject.tooltipValue) {
+                    tooltip.context.clearRect(0,0,640,480);
+                    var metrics = tooltipContext.measureText(dragObject.tooltipValue);
+                    var width = metrics.width;
+                    tooltip.context.fillStyle = "rgba(0,0,0,1)"; // black border
+                    tooltip.context.fillRect( 0,0, width+8,20+8);
+                    tooltip.context.fillStyle = "rgba(255,255,255,1)"; // white filler
+                    tooltip.context.fillRect( 2,2, width+4,20+4 );
+                    tooltip.context.fillStyle = "rgba(0,0,0,1)"; // text color
+                    tooltip.context.fillText( dragObject.tooltipValue, 4,20 );
+                    tooltip.sprite.position.set( dragObject.position.x-50, dragObject.position.y+100, floor*floorHeight+10 );
+                    tooltip.texture.needsUpdate = true;
+                }
+            });
+            // マウスアウトイベントの登録
+            dragcontrols.on('hoveroff', function(e){
+                if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
+                    return;
+                }
+                cube2.material.visible = true; // 現在の階より上を表示する。
+                // トラックボールオブジェクトを有効化
+                trackball.enabled = true;
+                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
+                if(e) {
+                    e.object.position.setZ(floor*floorHeight);
+                    if(e.object.position.x > cubeX/2) {
+                        e.object.position.setX(cubeX/2);
+                    } else if(e.object.position.x < -1*cubeX/2) {
+                        e.object.position.setX(-1*cubeX/2);
+                    }
+
+                    if(e.object.position.y > cubeY/2) {
+                        e.object.position.setY(cubeY/2);
+                    } else if(e.object.position.y < -1*cubeY/2) {
+                        e.object.position.setY(-1*cubeY/2);
+                    }
+                    // tooltipを非表示にする。
+                    if(e.object.tooltipValue){
+                        tooltip.context.clearRect(0,0,300,300);
+                        tooltip.texture.needsUpdate = true;
+                    }
+
+                }
+                // ドラッグ対象オブジェクトを無しとする。
+                dragObject = null;
+            });
+
             initLight(scene);
             initObject(scene, dragcontrols);
 
@@ -53,22 +112,20 @@
             renderer.shadowMap.enabled = true;
             return renderer;
         }
-
-        var tooltipSprite;
-        var tooltipContext;
-        var tooltipTexture;
-        function initTooltip(scene) {
+        
+        function Tooltip(scene) {
             var tooltipCanvas = document.createElement('canvas');
-            tooltipContext = tooltipCanvas.getContext('2d');
-            tooltipContext.font = "Bold 20px Arial";
-            tooltipContext.fillStyle = "rgba(0,0,0,0.95)";
-            tooltipTexture =  new THREE.Texture(tooltipCanvas);
-            tooltipTexture.needsUpdate = true;
-            var spriteMaterial = new THREE.SpriteMaterial( { map: tooltipTexture} );
-            tooltipSprite = new THREE.Sprite( spriteMaterial );
-            tooltipSprite.scale.set(200,100,1.0);
-            tooltipSprite.position.set( 50, 50, 200 );
-            scene.add(tooltipSprite);
+            this.context = tooltipCanvas.getContext('2d');
+            this.context.font = "Bold 20px Arial";
+            this.context.fillStyle = "rgba(0,0,0,0.95)";
+            this.texture =  new THREE.Texture(tooltipCanvas);
+            this.texture.needsUpdate = true;
+            var texture = this.texture;
+            var spriteMaterial = new THREE.SpriteMaterial( { map: texture} );
+            this.sprite = new THREE.Sprite( spriteMaterial );
+            this.sprite.scale.set(200,100,1.0);
+            this.sprite.position.set( 50, 50, 200 );
+            scene.add(this.sprite);
         }
 
         var trackball;
@@ -110,71 +167,10 @@
         }
 
         function initDragControl(renderer, camera) {
-
-            var dragObject = null; // ドラッグ対象オブジェクト
             // ドラッグコントロールオブジェクトの生成
             var dragcontrols = new THREE.DragControls(camera, null, renderer.domElement);
             // ドラッグコントロールを有効化
             dragcontrols.enabled = true;
-
-            // マウスオーバーイベントの登録
-            dragcontrols.on('hoveron', function(e){
-                if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
-                    return;
-                }
-                cube2.material.visible = false; // 現在の階より上を非表示にする。
-                // トラックボールオブジェクトを無効化
-                trackball.enabled = false;
-                // マウスドラッグ対象オブジェクトを更新
-                dragObject = e.object;
-                // tooltipを表示する。
-                if(dragObject.tooltipValue) {
-                    tooltipContext.clearRect(0,0,640,480);
-                    var metrics = tooltipContext.measureText(dragObject.tooltipValue);
-                    var width = metrics.width;
-                    tooltipContext.fillStyle = "rgba(0,0,0,1)"; // black border
-                    tooltipContext.fillRect( 0,0, width+8,20+8);
-                    tooltipContext.fillStyle = "rgba(255,255,255,1)"; // white filler
-                    tooltipContext.fillRect( 2,2, width+4,20+4 );
-                    tooltipContext.fillStyle = "rgba(0,0,0,1)"; // text color
-                    tooltipContext.fillText( dragObject.tooltipValue, 4,20 );
-                    tooltipSprite.position.set( dragObject.position.x-50, dragObject.position.y+100, floor*floorHeight+10 );
-                    tooltipTexture.needsUpdate = true;
-                }
-            });
-
-            // マウスアウトイベントの登録
-            dragcontrols.on('hoveroff', function(e){
-                if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
-                    return;
-                }
-                cube2.material.visible = true; // 現在の階より上を表示する。
-                // トラックボールオブジェクトを有効化
-                trackball.enabled = true;
-                // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
-                if(e) {
-                    e.object.position.setZ(floor*floorHeight);
-                    if(e.object.position.x > cubeX/2) {
-                        e.object.position.setX(cubeX/2);
-                    } else if(e.object.position.x < -1*cubeX/2) {
-                        e.object.position.setX(-1*cubeX/2);
-                    }
-
-                    if(e.object.position.y > cubeY/2) {
-                        e.object.position.setY(cubeY/2);
-                    } else if(e.object.position.y < -1*cubeY/2) {
-                        e.object.position.setY(-1*cubeY/2);
-                    }
-                    // tooltipを非表示にする。
-                    if(e.object.tooltipValue){
-                        tooltipContext.clearRect(0,0,300,300);
-                        tooltipTexture.needsUpdate = true;
-                    }
-
-                }
-                // ドラッグ対象オブジェクトを無しとする。
-                dragObject = null;
-            });
             return dragcontrols;
         }
 
