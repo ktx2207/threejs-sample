@@ -20,7 +20,7 @@
         });
 
         function threeStart() {
-            var floor = 1;
+            var currentFloor = 1; // 現在の階
             var floorHeight = 10;
             var floorCount = 20;
             var cubeX = 100;
@@ -39,7 +39,7 @@
             // グループを生成
             var objectGroup = new THREE.Group();
             // 建築物オブジェクトを生成
-            var building = new Building(scene, dragcontrols, objectGroup, floor, floorHeight, floorCount, cubeX, cubeY, cubeZ);
+            var building = new Building(scene, dragcontrols, objectGroup, currentFloor, floorHeight, floorCount, cubeX, cubeY, cubeZ);
 
             var dragObject = null; // ドラッグ対象オブジェクト
             // マウスオーバーイベントの登録
@@ -63,7 +63,7 @@
                     tooltip.context.fillRect( 2,2, width+4,20+4 );
                     tooltip.context.fillStyle = "rgba(0,0,0,1)"; // text color
                     tooltip.context.fillText( dragObject.tooltipValue, 4,20 );
-                    tooltip.sprite.position.set( dragObject.position.x-50, dragObject.position.y+100, floor*floorHeight+10 );
+                    tooltip.sprite.position.set( dragObject.position.x-50, dragObject.position.y+100, currentFloor*floorHeight+10 );
                     tooltip.texture.needsUpdate = true;
                 }
             });
@@ -77,7 +77,7 @@
                 trackball.enabled = true;
                 // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
                 if(e) {
-                    e.object.position.setZ(floor*floorHeight);
+                    e.object.position.setZ(currentFloor*floorHeight);
                     if(e.object.position.x > cubeX/2) {
                         e.object.position.setX(cubeX/2);
                     } else if(e.object.position.x < -1*cubeX/2) {
@@ -107,18 +107,18 @@
             var select = document.getElementById('floor');
             // ドロップダウン変更時
             select.onchange = function() {
-                floor = this.options[this.selectedIndex].value;
-                building.cube1.scale.z = floor;
-                building.cube1.position.setZ(floor*floorHeight/2);
-                building.grid.position.setZ(floor*floorHeight);
-                for(var i=floor; i< floorCount; i++) { // cube2のグリッドを現在の階より上は非表示にする。
+                currentFloor = this.options[this.selectedIndex].value;
+                building.cube1.scale.z = currentFloor;
+                building.cube1.position.setZ(currentFloor*floorHeight/2);
+                building.grid.position.setZ(currentFloor*floorHeight);
+                for(var i=currentFloor; i< floorCount; i++) { // cube2のグリッドを現在の階より上は非表示にする。
                     building.cube2Grid[i].material.visible = false;
                 }
-                for(var i=0; i < floor; i++) { // cube2のグリッドを現在の階より下は表示する。
+                for(var i=0; i < currentFloor; i++) { // cube2のグリッドを現在の階より下は表示する。
                     building.cube2Grid[i].material.visible = true;
                 }
                 for(var i=0; i< building.latheArray.length; i++) {
-                    if(i == floor -1) {
+                    if(i == currentFloor -1) {
                         building.latheArray[i][0].material.visible = true;
                         building.latheArray[i][1].material.visible = true;
                     } else {
