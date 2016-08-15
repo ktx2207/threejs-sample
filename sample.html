@@ -20,6 +20,14 @@
         });
 
         function threeStart() {
+            var floor = 1;
+            var floorHeight = 10;
+            var floorCount = 20;
+            var cubeX = 100;
+            var cubeY = 100;
+            var cubeZ = floorCount*floorHeight;
+
+
             var canvasFrame = document.getElementById('canvas-frame');
             var renderer = initThree(canvasFrame);
             // シーンオブジェクトの生成
@@ -28,13 +36,18 @@
             var camera = initCamera(canvasFrame);
             var trackball = initTrackball(camera, canvasFrame);
             var dragcontrols = initDragControl(renderer, camera);
+            // グループを生成
+            var objectGroup = new THREE.Group();
+            // 建築物オブジェクトを生成
+            var building = new Building(scene, dragcontrols, objectGroup, floor, floorHeight, floorCount, cubeX, cubeY, cubeZ);
+
             var dragObject = null; // ドラッグ対象オブジェクト
             // マウスオーバーイベントの登録
             dragcontrols.on('hoveron', function(e){
                 if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
                     return;
                 }
-                cube2.material.visible = false; // 現在の階より上を非表示にする。
+                building.cube2.material.visible = false; // 現在の階より上を非表示にする。
                 // トラックボールオブジェクトを無効化
                 trackball.enabled = false;
                 // マウスドラッグ対象オブジェクトを更新
@@ -59,7 +72,7 @@
                 if(e != null && e.object.material.visible == false) { // 回転体オブジェクトが非表示の場合は無効とする。
                     return;
                 }
-                cube2.material.visible = true; // 現在の階より上を表示する。
+                building.cube2.material.visible = true; // 現在の階より上を表示する。
                 // トラックボールオブジェクトを有効化
                 trackball.enabled = true;
                 // マウスオーバーしたオブジェクトが平面にない場合、位置を調整する。
@@ -88,29 +101,29 @@
             });
 
             initLight(scene);
-            initObject(scene, dragcontrols);
+
 
             // ドロップダウン
             var select = document.getElementById('floor');
             // ドロップダウン変更時
             select.onchange = function() {
                 floor = this.options[this.selectedIndex].value;
-                cube1.scale.z = floor;
-                cube1.position.setZ(floor*floorHeight/2);
-                grid.position.setZ(floor*floorHeight);
+                building.cube1.scale.z = floor;
+                building.cube1.position.setZ(floor*floorHeight/2);
+                building.grid.position.setZ(floor*floorHeight);
                 for(var i=floor; i< floorCount; i++) { // cube2のグリッドを現在の階より上は非表示にする。
-                    cube2Grid[i].material.visible = false;
+                    building.cube2Grid[i].material.visible = false;
                 }
                 for(var i=0; i < floor; i++) { // cube2のグリッドを現在の階より下は表示する。
-                    cube2Grid[i].material.visible = true;
+                    building.cube2Grid[i].material.visible = true;
                 }
                 for(var i=0; i<latheArray.length; i++) {
                     if(i == floor -1) {
-                        latheArray[i][0].material.visible = true;
-                        latheArray[i][1].material.visible = true;
+                        building.latheArray[i][0].material.visible = true;
+                        building.latheArray[i][1].material.visible = true;
                     } else {
-                        latheArray[i][0].material.visible = false;
-                        latheArray[i][1].material.visible = false;
+                        building.latheArray[i][0].material.visible = false;
+                        building.latheArray[i][1].material.visible = false;
                     }
                 }
             }
@@ -153,9 +166,8 @@
             scene.add(this.sprite);
         }
 
-        var floor = 1;
-        var floorHeight = 10;
-        var floorCount = 20;
+
+
         function initCamera(canvasFrame) {
             var camera = new THREE.PerspectiveCamera(45, canvasFrame.clientWidth / canvasFrame.clientHeight, 1, 10000);
 
@@ -219,24 +231,17 @@
             scene.add(directionalLight);
         }
 
-        var cubeX = 100;
-        var cubeY = 100;
-        var cubeZ = floorCount*floorHeight;
-        var cube1;
-        var cube2;
-        var cube2Grid = [];
-        var grid;
-        var latheArray = [];
-        function initObject(scene, dragcontrols) {
-            // グループを生成
-            var objectGroup = new THREE.Group();
-
+        function initGrid(objectGroup, floor, floorHeight) {
             // グリッドオブジェクトの生成
-            grid = new THREE.GridHelper(cubeX/2, 10);
+            var grid = new THREE.GridHelper(cubeX/2, 10);
             grid.rotation.set(Math.PI/2, 0, 0);
             grid.position.set(0,0,floor*floorHeight)
             objectGroup.add(grid);
+            return grid;
+        }
 
+        function initCube2Grid(objectGroup, floorHeight, floorCount) {
+            var cube2Grid = [];
             for(var i=0; i < floorCount; i++) {
                 var g = new THREE.GridHelper(cubeX/2, 0);
                 g.rotation.set(Math.PI/2, 0, 0);
@@ -245,6 +250,14 @@
                 cube2Grid.push(g);
                 objectGroup.add(g);
             }
+            return cube2Grid;
+        }
+
+
+        function Building(scene, dragcontrols, objectGroup, floor, floorHeight, floorCount, cubeX, cubeY, cubeZ) {
+            // グリッドオブジェクトを生成
+            this.grid = initGrid(objectGroup, floor, floorHeight);
+            this.cube2Grid = initCube2Grid(objectGroup, floorHeight, floorCount);
 
             // 平面オブジェクトの生成
             var planeGeometry = new THREE.PlaneGeometry(400,400);
@@ -254,29 +267,29 @@
             plane.position.set(0,0,0);
             objectGroup.add(plane);
 
-
             // 直方体を生成
-            cube1 =  createCube(cubeX, cubeY, floorHeight*floor, false);
-            cube1.position.setZ(floorHeight*floor/2);
+            this.cube1 =  createCube(cubeX, cubeY, floorHeight*floor, false);
+            this.cube1.cube1.position.setZ(floorHeight*floor/2);
             // 影を描画オブジェクトにする。
-            cube1.receiveShadow = true;
+            this.cube1.receiveShadow = true;
             // 影の発生元にもなる。
-            cube1.castShadow = true;
-            cube2 = createCube(cubeX, cubeY, cubeZ - floorHeight*floor, true);
-            cube2.position.setZ(cubeZ/2);
+            this.cube1.castShadow = true;
+            this.cube2 = createCube(cubeX, cubeY, cubeZ - floorHeight*floor, true);
+            this.cube2.position.setZ(cubeZ/2);
             // 直方体をグループに追加
-            objectGroup.add(cube1);
-            objectGroup.add(cube2);
+            objectGroup.add(this.cube1);
+            objectGroup.add(this.cube2);
 
+            this.latheArray = [];
             for(var i=0; i< floorCount; i++) {
-                latheArray.push(new Array());
-                for(j=0; j<2; j++) {
+                this.latheArray.push(new Array());
+                for(var j=0; j<2; j++) {
                     var randX = Math.floor( Math.random() * 50 );
                     var randY = Math.floor( Math.random() * 50 );
                     // 回転体を追加
                     var lathe = createLathe(randX,randY,(i+1)*floorHeight);
-                    lathe.tooltipValue = '機材'+(i+1)+"-"+(j+1);
-                    latheArray[i].push(lathe);
+                    lathe.tooltipValue = 'オブジェクト'+(i+1)+"-"+(j+1);
+                    this.latheArray[i].push(lathe);
                     objectGroup.add(lathe);
                     if(i != 0) {
                         lathe.material.visible = false;
