@@ -27,14 +27,19 @@
             var cubeY = 100; // 建築物の縦幅
             var cubeZ = floorCount*floorHeight; // 建築物の高さ
 
-
+            // 描画するためのdivタグの参照を取得
             var canvasFrame = document.getElementById('canvas-frame');
+            // レンダラーを初期化
             var renderer = initThree(canvasFrame);
             // シーンオブジェクトの生成
             var scene = new THREE.Scene();
+            // ツールチップを初期化
             var tooltip = new Tooltip(scene);
+            // カメラを初期化
             var camera = initCamera(canvasFrame);
+            // トラックボールを初期化
             var trackball = initTrackball(camera, canvasFrame);
+            // ドラッグコントロールを初期化
             var dragcontrols = initDragControl(renderer, camera);
             // グループを生成
             var objectGroup = new THREE.Group();
@@ -42,6 +47,8 @@
             var building = new Building(dragcontrols, objectGroup, currentFloor, floorHeight, floorCount, cubeX, cubeY, cubeZ);
             // オブジェクトグループをシーンに追加
             scene.add(objectGroup);
+            // 光源の初期化
+            initLight(scene);
 
             var dragObject = null; // ドラッグ対象オブジェクト
             // マウスオーバーイベントの登録
@@ -102,12 +109,12 @@
                 dragObject = null;
             });
 
-            initLight(scene);
+
 
 
             // ドロップダウン
             var select = document.getElementById('floor');
-            // ドロップダウン変更時
+            // ドロップダウン変更時は指定した階のオブジェクトを表示する。
             select.onchange = function() {
                 currentFloor = this.options[this.selectedIndex].value;
                 building.visiblePart.scale.z = currentFloor;
@@ -130,12 +137,14 @@
                 }
             }
 
-            // 描画処理を実行
-            (function draw(){
+            // 描画処理
+            var drawFunc = function draw(){
                 trackball.update();
                 renderer.render(scene, camera);
                 requestAnimationFrame(draw);
-            })();
+            }
+            // 描画処理を実行
+            drawFunc();
         }
 
 
@@ -215,7 +224,6 @@
         }
 
 
-        // 光源の初期化
         function initLight(scene) {
             var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1.0); // 平行光源オブジェクト
             // 光源位置の設定
@@ -266,17 +274,15 @@
             var planeGeometry = new THREE.PlaneGeometry(400,400);
             var planeMaterial = new THREE.MeshLambertMaterial({color: 0xDCDCDC});
             var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-            plane.receiveShadow = true;
+            plane.receiveShadow = true; // 平面オブジェクトに影を描写する設定
             plane.position.set(0,0,0);
             objectGroup.add(plane);
 
             // 建築物(可視部分)を生成
             this.visiblePart =  createCube(cubeX, cubeY, floorHeight*floor, false);
             this.visiblePart.position.setZ(floorHeight*floor/2);
-            // 影を描画オブジェクトにする。
-            this.visiblePart.receiveShadow = true;
-            // 影の発生元にもなる。
-            this.visiblePart.castShadow = true;
+            this.visiblePart.receiveShadow = true;  // 建築物(可視部分)に影を描写する設定
+            this.visiblePart.castShadow = true; // 建築物(可視部分)が影の発生元になる設定
             // 建築物(不可視部分)を生成
             this.invisiblePart = createCube(cubeX, cubeY, cubeZ - floorHeight*floor, true);
             this.invisiblePart.position.setZ(cubeZ/2);
@@ -285,6 +291,7 @@
             objectGroup.add(this.invisiblePart);
 
             var lathes=[]; // 回転体オブジェクトの配列
+            // 各階において、回転体オブジェクトを２つずつ任意の位置に配置する。
             this.latheArray = [];
             for(var i=0; i< floorCount; i++) {
                 this.latheArray.push(new Array());
@@ -298,6 +305,7 @@
                     this.latheArray[i].push(lathe);
                     objectGroup.add(lathe);
                     if(i != 0) {
+                        // 1階のオブジェクトでない場合は非表示とする。
                         lathe.material.visible = false;
                     }
                 }
